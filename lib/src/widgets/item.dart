@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:intl_phone_number_input/src/models/country_model.dart';
 import 'package:intl_phone_number_input/src/utils/util.dart';
 
@@ -11,9 +12,10 @@ class Item extends StatelessWidget {
   final bool withCountryNames;
   final double? leadingPadding;
   final bool trailingSpace;
+  final PhoneInputSelectorType phoneInputSelectorType;
 
   const Item({
-    Key? key,
+    super.key,
     this.country,
     this.showFlag,
     this.useEmoji,
@@ -21,7 +23,8 @@ class Item extends StatelessWidget {
     this.withCountryNames = false,
     this.leadingPadding = 12,
     this.trailingSpace = true,
-  }) : super(key: key);
+    this.phoneInputSelectorType = PhoneInputSelectorType.BOTTOM_SHEET,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -41,11 +44,17 @@ class Item extends StatelessWidget {
             useEmoji: useEmoji,
           ),
           SizedBox(width: 12.0),
+          phoneInputSelectorType == PhoneInputSelectorType.CUSTOM
+              ? Text('${country?.alpha2Code}')
+              : SizedBox.shrink(),
           Text(
-            '$dialCode',
+            ' (${dialCode.trim()}) ',
             textDirection: TextDirection.ltr,
             style: textStyle,
           ),
+          phoneInputSelectorType == PhoneInputSelectorType.CUSTOM
+              ? Text('|')
+              : SizedBox.shrink(),
         ],
       ),
     );
